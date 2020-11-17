@@ -319,6 +319,13 @@ be found in any statistics text.
    deviation.  This is slightly faster than the :func:`normalvariate` function
    defined below.
 
+   Multithreading note:  When two threads call this function
+   simultaneously, it is possible that they will receive the
+   same return value.  This can be avoided in three ways.
+   1) Have each thread use a different instance of the random
+   number generator. 2) Put locks around all calls. 3) Use the
+   slower, but thread-safe :func:`normalvariate` function instead.
+
 
 .. function:: lognormvariate(mu, sigma)
 
@@ -545,9 +552,9 @@ Recipes
 
 The default :func:`.random` returns multiples of 2⁻⁵³ in the range
 *0.0 ≤ x < 1.0*.  All such numbers are evenly spaced and are exactly
-representable as Python floats.  However, many floats in that interval
-are not possible selections.  For example, ``0.05954861408025609``
-isn't an integer multiple of 2⁻⁵³.
+representable as Python floats.  However, many other representable
+floats in that interval are not possible selections.  For example,
+``0.05954861408025609`` isn't an integer multiple of 2⁻⁵³.
 
 The following recipe takes a different approach.  All floats in the
 interval are possible selections.  The mantissa comes from a uniform
